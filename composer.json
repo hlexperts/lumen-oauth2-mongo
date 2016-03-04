@@ -19,6 +19,6 @@
   "autoload": {
     "psr-4": { "Nebo15\\LumenOauth2\\": "src" }
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minimum-stability": "dev"
 }
