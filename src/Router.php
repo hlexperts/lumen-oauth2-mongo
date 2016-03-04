@@ -11,7 +11,6 @@ use OAuth2\Server;
 
 class Router
 {
-
     private $app;
     protected $userModel;
 
@@ -20,7 +19,6 @@ class Router
         $this->userModel = $userModel;
         $this->app = $app;
     }
-
     public function makeRestRoutes()
     {
         $storage = new Mongo($this->userModel);
@@ -34,5 +32,4 @@ class Router
             return response($access_token);
         });
     }
-
 }
