@@ -5,30 +5,21 @@ namespace Nebo15\LumenOauth2\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Nebo15\LumenOauth2\Interfaces\Oauthable;
 use Nebo15\LumenOauth2\Models\Client;
-//use \OAuth2\OpenID\Storage\AuthorizationCodeInterface as OpenIDAuthorizationCodeInterface;
 use OAuth2\Storage\AccessTokenInterface;
 use OAuth2\Storage\ClientCredentialsInterface;
 use OAuth2\Storage\UserCredentialsInterface;
 use OAuth2\Storage\RefreshTokenInterface;
-use OAuth2\Storage\AuthorizationCodeInterface;
 
 class Mongo  implements AccessTokenInterface,
     ClientCredentialsInterface,
     UserCredentialsInterface,
     RefreshTokenInterface
-    //OpenIDAuthorizationCodeInterface
 {
 
     /** @var Model $model */
     private $userModel;
 
     private $user;
-
-    /**
-     * Mongo constructor.
-     * @param Oauth2User $userModel
-     * @param array $config
-     */
     public function __construct(Oauthable $userModel, array $config = [])
     {
         $this->userModel = $userModel;
