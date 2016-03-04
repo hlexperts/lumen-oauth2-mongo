@@ -13,9 +13,8 @@ class ServiceProvider extends LumenServiceProvider
     {
         $this->app->make('config')->set('oauth2', require __DIR__ . '/../config/oauth2.php');
         $this->app->configure('oauth2');
-
-        $userModel = new $this->app['config']['oauth2.userModel'];
-
+        $config = $this->app['config'];
+        $userModel = new $config['oauth2.userModel'];
         $this->app->singleton('Oauth.routes', function ($app) use ($userModel) {
             return new Router($userModel, $app);
         });
