@@ -3,6 +3,7 @@ namespace Nebo15\LumenOauth2\Providers;
 
 use Illuminate\Support\ServiceProvider as LumenServiceProvider;
 use Nebo15\LumenOauth2\Middleware\Authenticate;
+use Nebo15\LumenOauth2\Middleware\ClientAuthenticate;
 use Nebo15\LumenOauth2\Router;
 use Nebo15\LumenOauth2\Storage\Mongo;
 use OAuth2\Request;
@@ -12,12 +13,11 @@ class ServiceProvider extends LumenServiceProvider
 {
     public function register()
     {
-        $this->app->configure('auth');
-        $this->app->configure('oauth2');
         $this->app->make('config')->set('oauth2', require __DIR__ . '/../config/oauth2.php');
         $this->app->make('config')->set('auth', require __DIR__ . '/../config/auth.php');
 
-
+        $this->app->configure('oauth2');
+        $this->app->configure('auth');
 
         $config = $this->app['config'];
         $userModel = new $config['oauth2.userModel'];
@@ -27,6 +27,7 @@ class ServiceProvider extends LumenServiceProvider
 
         $this->app->routeMiddleware([
             'oauth' => Authenticate::class,
+            'oauth.basic.client' => ClientAuthenticate::class,
         ]);
 
         $this->app['auth']->viaRequest('oauth', function () use ($userModel) {

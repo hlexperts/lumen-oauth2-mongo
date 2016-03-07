@@ -9,4 +9,9 @@ class Client extends Base
     {
         return self::where(['client_id' => $client_id])->first();
     }
+
+    public function getSecret()
+    {
+        return $this->client_secret;
+    }
 }
