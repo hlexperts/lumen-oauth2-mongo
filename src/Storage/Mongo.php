@@ -10,7 +10,8 @@ use OAuth2\Storage\ClientCredentialsInterface;
 use OAuth2\Storage\UserCredentialsInterface;
 use OAuth2\Storage\RefreshTokenInterface;
 
-class Mongo  implements AccessTokenInterface,
+class Mongo implements
+    AccessTokenInterface,
     ClientCredentialsInterface,
     UserCredentialsInterface,
     RefreshTokenInterface
@@ -35,7 +36,7 @@ class Mongo  implements AccessTokenInterface,
     /* UserCredentialsInterface */
     public function checkUserCredentials($username, $password)
     {
-        if ( ($user = $this->getUser($username)) &&
+        if (($user = $this->getUser($username)) &&
             $this->userModel->getPasswordHasher()->check($password, $user->getPassword())
         ) {
             $this->user = $user;
@@ -56,7 +57,6 @@ class Mongo  implements AccessTokenInterface,
     public function checkClientCredentials($client_id, $client_secret = null)
     {
         if ($result = Client::findByClientId($client_id)) {
-
             return $client_secret == $result['client_secret'];
         }
 
@@ -143,7 +143,8 @@ class Mongo  implements AccessTokenInterface,
             $token->client_id = $client_id;
             $token->expires = $expires;
             $token->scope = $scope;
-        } else {;
+        } else {
+            ;
             $token = array(
                 'access_token' => $access_token,
                 'client_id' => $client_id,

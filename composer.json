@@ -9,7 +9,7 @@
   ],
   "license" : "MIT",
   "require" : {
-	"bshaffer/oauth2-server-php": "~1.8"
+    "bshaffer/oauth2-server-php": "~1.8"
   },
   "require-dev": {
     "laravel/lumen-framework": "5.2.*",
@@ -19,6 +19,6 @@
   "autoload": {
     "psr-4": { "Nebo15\\LumenOauth2\\": "src" }
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "minimum-stability": "dev"
 }

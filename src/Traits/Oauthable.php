@@ -5,7 +5,8 @@ use Illuminate\Hashing\BcryptHasher;
 use Nebo15\LumenOauth2\Models\AccessToken;
 use Nebo15\LumenOauth2\Models\RefreshToken;
 
-trait Oauthable {
+trait Oauthable
+{
 
     public function getUserByUsername($username)
     {

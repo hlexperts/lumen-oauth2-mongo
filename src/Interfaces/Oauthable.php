@@ -1,7 +1,8 @@
 <?php
 namespace Nebo15\LumenOauth2\Interfaces;
 
-interface Oauthable {
+interface Oauthable
+{
 
     public function getUserByUsername($username);
     public function getPassword();
@@ -17,5 +18,4 @@ interface Oauthable {
     public function getRefreshToken($refresh_token);
     public function setRefreshToken($data);
     public function deleteRefreshToken($refresh_token);
-
 }
