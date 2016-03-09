@@ -13,11 +13,11 @@ class ServiceProvider extends LumenServiceProvider
 {
     public function register()
     {
-        $this->app->make('config')->set('oauth2', require __DIR__ . '/../config/oauth2.php');
-        $this->app->make('config')->set('auth', require __DIR__ . '/../config/auth.php');
-
         $this->app->configure('oauth2');
         $this->app->configure('auth');
+        
+        $this->app->make('config')->set('oauth2', require __DIR__ . '/../config/oauth2.php');
+        $this->app->make('config')->set('auth', require __DIR__ . '/../config/auth.php');
 
         $config = $this->app['config'];
         $userModel = new $config['oauth2.userModel'];
