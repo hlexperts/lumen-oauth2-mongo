@@ -6,8 +6,8 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class IndexController extends BaseController
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return response(json_encode($request->user()));
     }
-
 }

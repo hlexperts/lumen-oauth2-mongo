@@ -1,6 +1,7 @@
 <?php
 namespace Nebo15\LumenOauth2\Providers;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\ServiceProvider as LumenServiceProvider;
 use Nebo15\LumenOauth2\Middleware\Authenticate;
 use Nebo15\LumenOauth2\Middleware\ClientAuthenticate;
@@ -11,19 +12,36 @@ use OAuth2\Server;
 
 class ServiceProvider extends LumenServiceProvider
 {
+
+    private $configs = [
+        'oauth2',
+        'auth',
+    ];
+
+    public function boot()
+    {
+        foreach ($this->configs as $config) {
+            $config = $config  . '.php';
+            $this->publishes([
+                __DIR__ . '/../config/' . $config => app()->basePath() . '/config' . ($config ? '/' . $config : $config),
+            ]);
+        }
+    }
+
     public function register()
     {
-        $this->app->configure('oauth2');
         $this->app->configure('auth');
-        
-        $this->app->make('config')->set('oauth2', require __DIR__ . '/../config/oauth2.php');
         $this->app->make('config')->set('auth', require __DIR__ . '/../config/auth.php');
+        foreach ($this->configs as $config) {
+            $this->mergeConfigFrom(
+                __DIR__ . '/../config/' . $config . '.php',
+                $config
+            );
+        }
 
         $config = $this->app['config'];
         $userModel = new $config['oauth2.userModel'];
-        $this->app->singleton('Oauth.routes', function ($app) use ($userModel) {
-            return new Router($userModel, $app);
-        });
+
 
         $this->app->routeMiddleware([
             'oauth' => Authenticate::class,
@@ -36,8 +54,14 @@ class ServiceProvider extends LumenServiceProvider
             $response = $server->verifyResourceRequest($request);
             if ($response) {
                 $response = $server->getAccessTokenData($request);
+
                 return $response->user;
             }
         });
+
+        $this->app->singleton('oauth.routes', function ($app) use ($userModel) {
+            return new Router($userModel, $app, Response::create());
+        });
+
     }
 }

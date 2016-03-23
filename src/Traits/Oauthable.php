@@ -8,6 +8,14 @@ use Nebo15\LumenOauth2\Models\RefreshToken;
 trait Oauthable
 {
 
+    protected function getArrayableRelations()
+    {
+        return array_merge(parent::getArrayableRelations(), [
+            'access_tokens' => $this->accessTokens,
+            'refresh_tokens' => $this->refreshTokens,
+        ]);
+    }
+
     public function getUserByUsername($username)
     {
         return $this->where(['username' => $username])->first();
@@ -47,12 +55,14 @@ trait Oauthable
     {
         $token = ($data instanceof AccessToken) ? $data : new AccessToken($data);
         $this->accessTokens()->associate($token);
+
         return $this;
     }
 
     public function deleteAccessToken($access_token)
     {
         $this->accessTokens()->dissociate($this->getAccessToken($access_token));
+
         return $this;
     }
 
@@ -70,12 +80,14 @@ trait Oauthable
     {
         $token = ($data instanceof RefreshToken) ? $data : new RefreshToken($data);
         $this->refreshTokens()->associate($token);
+
         return $this;
     }
 
     public function deleteRefreshToken($refresh_token)
     {
         $this->refreshTokens()->dissociate($this->getRefreshToken($refresh_token));
+
         return $this;
     }
 }
