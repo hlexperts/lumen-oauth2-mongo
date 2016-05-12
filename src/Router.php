@@ -26,7 +26,7 @@ class Router
         $server = new Server($storage, ['allow_implicit' => true]);
         $request = Request::createFromGlobals();
 
-        $this->app->post('/oauth/', function () use ($server, $storage, $request) {
+        $this->app->post('/api/v1/oauth/', function () use ($server, $storage, $request) {
             $server->addGrantType(new UserCredentials($storage));
             $server->addGrantType(new RefreshToken($storage, ['always_issue_new_refresh_token' => true]));
             $access_token = $server->handleTokenRequest($request);
@@ -35,7 +35,7 @@ class Router
         });
 
         $this->app->get(
-            '/test_user',
+            '/api/v1/test_user',
             ['uses' => '\Nebo15\LumenOauth2\Controllers\IndexController@index', 'middleware' => ['oauth']]
         );
     }
