@@ -29,9 +29,9 @@ class Router
         $this->app->post('/oauth/', function () use ($server, $storage, $request) {
             $server->addGrantType(new UserCredentials($storage));
             $server->addGrantType(new RefreshToken($storage, ['always_issue_new_refresh_token' => true]));
-            $access_token = $server->handleTokenRequest($request)->getResponseBody();
+            $access_token = $server->handleTokenRequest($request);
 
-            return response($access_token);
+            return response($access_token->getResponseBody(), $access_token->getStatusCode());
         });
 
         $this->app->get(
