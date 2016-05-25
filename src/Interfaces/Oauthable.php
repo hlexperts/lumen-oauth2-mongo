@@ -5,6 +5,8 @@ interface Oauthable
 {
 
     public function getUserByUsername($username);
+    public function getUserByEmail($email);
+
     public function getPassword();
     public function getPasswordHasher();
 

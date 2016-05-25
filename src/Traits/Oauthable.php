@@ -20,6 +20,10 @@ trait Oauthable
     {
         return $this->where(['username' => $username])->first();
     }
+    public function getUserByEmail($email)
+    {
+        return $this->where(['email' => $email])->first();
+    }
 
     public function getPassword()
     {

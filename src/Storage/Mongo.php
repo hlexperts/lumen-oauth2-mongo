@@ -21,6 +21,7 @@ class Mongo implements
     private $userModel;
 
     private $user;
+
     public function __construct(Oauthable $userModel, array $config = [])
     {
         $this->userModel = $userModel;
@@ -30,6 +31,7 @@ class Mongo implements
     {
         $this->userModel->username = $username;
         $this->userModel->password = $this->userModel->getPasswordHasher()->make($password);
+
         return boolval($this->userModel->save());
     }
 
@@ -40,8 +42,10 @@ class Mongo implements
             $this->userModel->getPasswordHasher()->check($password, $user->getPassword())
         ) {
             $this->user = $user;
+
             return true;
         }
+
         return false;
     }
 
@@ -80,28 +84,36 @@ class Mongo implements
         return is_null($result) ? false : $result;
     }
 
-    public function setClientDetails($client_id, $client_secret = null, $redirect_uri = null, $grant_types = null, $scope = null, $user_id = null)
-    {
+    public function setClientDetails(
+        $client_id,
+        $client_secret = null,
+        $redirect_uri = null,
+        $grant_types = null,
+        $scope = null,
+        $user_id = null
+    ) {
         if ($this->getClientDetails($client_id)) {
             $this->collection('client_table')->update(
-                array('client_id' => $client_id),
-                array('$set' => array(
-                    'client_secret' => $client_secret,
-                    'redirect_uri'  => $redirect_uri,
-                    'grant_types'   => $grant_types,
-                    'scope'         => $scope,
-                    'user_id'       => $user_id,
-                ))
+                ['client_id' => $client_id],
+                [
+                    '$set' => [
+                        'client_secret' => $client_secret,
+                        'redirect_uri' => $redirect_uri,
+                        'grant_types' => $grant_types,
+                        'scope' => $scope,
+                        'user_id' => $user_id,
+                    ],
+                ]
             );
         } else {
-            $client = array(
-                'client_id'     => $client_id,
+            $client = [
+                'client_id' => $client_id,
                 'client_secret' => $client_secret,
-                'redirect_uri'  => $redirect_uri,
-                'grant_types'   => $grant_types,
-                'scope'         => $scope,
-                'user_id'       => $user_id,
-            );
+                'redirect_uri' => $redirect_uri,
+                'grant_types' => $grant_types,
+                'scope' => $scope,
+                'user_id' => $user_id,
+            ];
             $this->collection('client_table')->insert($client);
         }
 
@@ -133,6 +145,7 @@ class Mongo implements
         } else {
             $token = $this->user->getAccessToken($access_token);
         }
+
         return is_null($token) ? false : $token;
     }
 
@@ -145,12 +158,12 @@ class Mongo implements
             $token->scope = $scope;
         } else {
             ;
-            $token = array(
+            $token = [
                 'access_token' => $access_token,
                 'client_id' => $client_id,
                 'expires' => $expires,
-                'scope' => $scope
-            );
+                'scope' => $scope,
+            ];
         }
         $this->user->setAccessToken($token)->save();
 
@@ -176,39 +189,45 @@ class Mongo implements
         } else {
             $token = $this->user->getRefreshToken($refresh_token);
         }
+
         return is_null($token) ? false : $token;
     }
 
     public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = null)
     {
-        $token = array(
+        $token = [
             'refresh_token' => $refresh_token,
             'client_id' => $client_id,
             'expires' => $expires,
-            'scope' => $scope
-        );
+            'scope' => $scope,
+        ];
         $this->user->setRefreshToken($token)->save();
+
         return true;
     }
 
     public function unsetRefreshToken($refresh_token)
     {
         $this->user->deleteRefreshToken($refresh_token)->save();
+
         return true;
     }
 
-    public function getUser($username)
+    public function getUser($data)
     {
-        $result = $this->userModel->getUserByUsername($username);
+        $result = (strpos($data, '@') === false) ?
+            $this->userModel->getUserByUsername($data) :
+            $this->userModel->getUserByEmail($data);
+
         return is_null($result) ? false : $result;
     }
 
     public function getClientKey($client_id, $subject)
     {
-        $result = $this->collection('jwt_table')->findOne(array(
+        $result = $this->collection('jwt_table')->findOne([
             'client_id' => $client_id,
-            'subject' => $subject
-        ));
+            'subject' => $subject,
+        ]);
 
         return is_null($result) ? false : $result['key'];
     }
