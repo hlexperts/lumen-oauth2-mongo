@@ -13,12 +13,12 @@
   },
   "require-dev": {
     "laravel/lumen-framework": "5.2.*",
-    "jenssegers/mongodb": "2.*",
+    "jenssegers/mongodb": "3.*",
     "squizlabs/php_codesniffer": "2.*"
   },
   "autoload": {
     "psr-4": { "Nebo15\\LumenOauth2\\": "src" }
   },
-  "version": "0.0.12",
+  "version": "0.1.1",
   "minimum-stability": "dev"
 }
