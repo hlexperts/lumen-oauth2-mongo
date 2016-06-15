@@ -2,6 +2,7 @@
   "name": "nebo15/lumen.oauth2-mongodb",
   "description": "Oauth2 Storage + Oauthable interface with trait for user model",
   "keywords": ["lumen", "oauth2", "mongo"],
+
   "authors": [
     {
       "name": "Oleh Samorai"
