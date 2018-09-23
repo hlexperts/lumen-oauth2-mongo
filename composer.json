@@ -1,5 +1,5 @@
 {
-  "name": "hlexperts/lumen.oauth2-mongodb",
+  "name": "hlexperts/oauth2-mongo",
   "description": "Oauth2 for mongodb",
   "keywords": ["gandalf", "oauth2", "mongo"],
 
