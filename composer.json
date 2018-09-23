@@ -1,5 +1,5 @@
 {
-  "name": "nebo15/lumen.oauth2-mongodb",
+  "name": "hlexperts/lumen.oauth2-mongodb",
   "description": "Oauth2 Storage + Oauthable interface with trait for user model",
   "keywords": ["lumen", "oauth2", "mongo"],
 
@@ -10,7 +10,7 @@
   ],
   "license" : "MIT",
   "require" : {
-    "bshaffer/oauth2-server-php": "~1.8"
+    "bshaffer/oauth2-server-php": "~1.10"
   },
   "require-dev": {
     "laravel/lumen-framework": "5.2.*",
